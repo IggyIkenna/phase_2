@@ -26,7 +26,7 @@
     /* More readable base typography */
     .reveal {
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      font-size: 21px; /* ~25% reduction for laptop fit */
+      font-size: 19px; /* tighter fit for laptop viewports */
     }
     .reveal h1, .reveal h2, .reveal h3 { letter-spacing: -0.02em; }
     .reveal h1 { font-size: 1.95em; }
@@ -103,14 +103,49 @@
       padding: 12px 14px;
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.14);
-      max-height: 62vh;
+      width: 100%;
+      max-height: 52vh;
       overflow-y: auto;
       overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
       overscroll-behavior: contain;
       touch-action: pan-y;
       scrollbar-gutter: stable;
+      scrollbar-width: thin; /* Firefox */
+      pointer-events: auto;
     }
+
+    /* Whole-slide scroll container (for slides with stacked cards) */
+    .slide-scroll{
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      touch-action: pan-y;
+      scrollbar-gutter: stable;
+      pointer-events: auto;
+      padding-right: 6px; /* keep content off scrollbar */
+    }
+
+    /* Make slide-level scrolling deterministic (no nested scroll traps) */
+    .reveal .slides section.has-slide-scroll{
+      display: flex;
+      flex-direction: column;
+    }
+    .reveal .slides section.has-slide-scroll .slide-scroll{
+      flex: 1 1 auto;
+      min-height: 0;
+      max-height: none;
+      padding-bottom: 110px; /* ensure last lines can scroll above fixed footer */
+    }
+    .reveal .slides section.has-slide-scroll .box{
+      max-height: none; /* avoid nested scrolling inside the slide scroller */
+    }
+
+    .slide-scroll::-webkit-scrollbar { width: 10px; }
+    .slide-scroll::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.04); border-radius: 999px; }
+    .slide-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.16); border-radius: 999px; border: 2px solid rgba(0,0,0,0); background-clip: padding-box; }
+    .slide-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.24); }
 
     .box::-webkit-scrollbar { width: 10px; }
     .box::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.04); border-radius: 999px; }
@@ -283,10 +318,10 @@
             <p class="quote">
               “Scope Exclusions: … <strong>Ultra low latency execution</strong> … <strong>Post-launch maintenance and upgrades</strong> (can be arranged separately) …”
             </p>
+            <p class="fineprint" style="margin-top: 10px;">
+              Source: Elysium x IkeNova Consulting Agreement (Annex A excerpts).
+            </p>
           </div>
-          <p class="fineprint">
-            Source: Elysium x IkeNova Consulting Agreement (Annex A excerpts).
-          </p>
         </div>
       </section>
 
@@ -298,7 +333,7 @@
             <h3>Execution + platform concepts explicitly included</h3>
             <ul>
               <li><span class="emph">Atomic transactions</span> + flash loans</li>
-              <li><span class="emph">MEV protection</span> (CoW Swap), <span class="emph">Tenderly simulation</span>, private RPC</li>
+              <li><span class="emph">MEV protection</span> (CoW Swap), <span class="emph">Tenderly simulation</span>, private RPC - likely essential at scale (RPC ongoing cost external to IkeNova and not included)</li>
               <li><span class="emph">Multi-venue routing</span> / “Smart execution”</li>
               <li><span class="emph">Backtest → live</span> via env-var switch (same codebase)</li>
               <li><span class="emph">Containerized microservices</span>, Kubernetes-ready, gRPC</li>
@@ -384,7 +419,7 @@
                 <tr>
                   <td><strong>Atomic on-chain execution</strong> (flash loans, multi-step tx, failure atomicity)</td>
                   <td class="maybe">Not explicit in contract</td>
-                  <td class="maybe">Only if required for contracted strategy</td>
+                  <td class="maybe">Not required under the contract; recommended to avoid execution edge cases</td>
                   <td class="yes">Included</td>
                 </tr>
                 <tr>
@@ -465,40 +500,47 @@
         <div class="grid3">
           <div class="card">
             <div class="tag warn"><span class="dot warn"></span> Execution</div>
-            <ul style="margin-top: 10px;">
-              <li>Atomicity vs partial fills</li>
-              <li>MEV + slippage defense</li>
-              <li>Multi-venue coordination</li>
-              <li>Latency + reliability</li>
-            </ul>
+            <div class="box" style="max-height: 42vh;">
+              <ul style="margin-top: 10px;">
+                <li>Atomicity vs partial fills</li>
+                <li>MEV + slippage defense</li>
+                <li>Multi-venue coordination</li>
+                <li>Latency + reliability</li>
+              </ul>
+            </div>
           </div>
           <div class="card">
             <div class="tag warn"><span class="dot warn"></span> Risk</div>
-            <ul style="margin-top: 10px;">
-              <li>Delta drift, liquidation risk</li>
-              <li>Position/PnL reconciliation</li>
-              <li>Guardrails + kill-switches</li>
-              <li>Audit trails</li>
-            </ul>
+            <div class="box" style="max-height: 42vh;">
+              <ul style="margin-top: 10px;">
+                <li>Delta drift, liquidation risk</li>
+                <li>Position/PnL reconciliation conplexity increases with scaled scope</li>
+                <li>Guardrails + kill-switches</li>
+                <li>Audit trails</li>
+              </ul>
+            </div>
           </div>
           <div class="card">
             <div class="tag warn"><span class="dot warn"></span> Ops</div>
-            <ul style="margin-top: 10px;">
-              <li>Deployment + secrets</li>
-              <li>Monitoring + alerting</li>
-              <li>Incident response</li>
-              <li>Runbooks + handover</li>
-            </ul>
+            <div class="box" style="max-height: 42vh;">
+              <ul style="margin-top: 10px;">
+                <li>Deployment + secrets</li>
+                <li>Monitoring + alerting</li>
+                <li>Incident response</li>
+                <li>Runbooks + handover (part of initial spec but again increases with scaled scope)</li>
+              </ul>
+            </div>
           </div>
         </div>
         <p class="fineprint" style="margin-top: 14px;">
-          Typically, the difference between “research code” and “production trading” is 2–5× effort for the same strategy.
+          Typically, the difference between “research code” and “production trading” is 2–5× effort for the same strategy. This further scales with more strategy options, more venues and execution enhancements.
         </p>
       </section>
 
       <!-- OPTION 1 -->
-      <section>
+      <section class="has-slide-scroll">
         <h2>Option 1 — Continue as contracted (with fee adjustment)</h2>
+        <div class="slide-scroll">
         <div class="grid2">
           <div class="card">
             <div class="tag good"><span class="dot good"></span> Commercial</div>
@@ -512,7 +554,8 @@
                 <li><span class="emph">Paid to date:</span> <span class="money">$45k</span> (Phase 1)</li>
                 <li><span class="emph">Phase 2 unpaid:</span> <span class="money">$45k</span> (work already started)</li>
                 <li><span class="emph">Change order uplift:</span> <span class="money">$35k</span> (covers accumulated overrun + go-live gap)</li>
-                <li><span class="emph">Remaining balance to proceed:</span> <span class="money">$80k</span></li>
+                <li><span class="emph">Payment to proceed now:</span> <span class="money">$57.5k</span> (<span class="money">$22.5k</span> interim Phase 2 payment + <span class="money">$35k</span> change order)</li>
+                <li><span class="emph">Remaining balance:</span> depends on selected option (<span class="emph">Option 1:</span> <span class="money">$22.5k</span> / <span class="emph">Option 2:</span> <span class="money">$92.5k</span>)</li>
               </ul>
               <ul class="dim">
                 <li>Recognizes research/build overrun already incurred</li>
@@ -543,8 +586,9 @@
         <div class="card">
           <h3>Payment gate</h3>
           <ul class="dim">
-            <li>Settle the <span class="money">$45k</span> unpaid Phase 2 amount + sign the <span class="money">$35k</span> change order before further Phase 2 execution work.</li>
-            <li>Acceptance: client has <strong>10 business days</strong> to accept/reject deliverables; contractor has <strong>10 business days</strong> to remedy deficiencies.</li>
+            <li>To proceed immediately: settle the <span class="money">$22.5k</span> interim Phase 2 payment (already discussed invoice to follow) + ideally sign the <span class="money">$35k</span> change order.</li>
+            <li>Remaining balance is settled once the option is confirmed (Option 1 vs Option 2).</li>
+            <li>Milestone acceptance criteria as per contractor agreement: client has <strong>10 business days</strong> to accept/reject deliverables; contractor has <strong>10 business days</strong> to remedy deficiencies.</li>
             <li>Invoicing will be issued by <strong>IkeNova (BVI)</strong>.</li>
           </ul>
           <p class="fineprint">
@@ -560,26 +604,30 @@
             <li>Full e2e cloud trading system packaging and long-term ops commitment</li>
           </ul>
         </div>
+        </div>
       </section>
 
       <!-- OPTION 2 -->
-      <section>
+      <section class="has-slide-scroll">
         <h2>Option 2 — Full platform delivery (beyond contract)</h2>
+        <div class="slide-scroll">
         <div class="grid2">
           <div class="card">
             <div class="tag good"><span class="dot good"></span> Commercial</div>
             <p style="margin-top: 12px;">
               Total fee: <span class="money">$195k</span>
             </p>
-            <ul class="dim">
-              <li>Delivers the full platform build (execution + infra + multiple strategies)</li>
-              <li>Builds reusable IP (execution layer) that can compound into future strategies</li>
-              <li>Supports ongoing engineering delivery rather than a one-time handover</li>
-            </ul>
+            <div class="box" style="max-height: 26vh;">
+              <ul class="dim">
+                <li>Delivers the full platform build (execution + infra + multiple strategies)</li>
+                <li>Builds reusable IP (execution layer) that can compound into future strategies</li>
+                <li>Supports ongoing engineering delivery rather than a one-time handover</li>
+              </ul>
+            </div>
           </div>
           <div class="card">
             <h3>Core deliverables</h3>
-            <div class="box">
+            <div class="box" style="max-height: 34vh;">
               <ul>
                 <li>Atomic transaction execution layer + connectors</li>
                 <li>Smart execution + multi-venue routing primitives</li>
@@ -594,7 +642,7 @@
         <div class="hr"></div>
         <div class="card">
           <h3>Addendum required (IP carve-out + exclusions alignment)</h3>
-          <div class="box">
+          <div class="box" style="max-height: 26vh;">
             <ul class="dim">
               <li><span class="emph">Why an addendum:</span> the signed contract assigns Work Product to the Company, but Option 2 includes a reusable execution layer that should remain licensable.</li>
               <li><span class="emph">Proposed carve-out:</span> client owns strategy-specific deliverables for their use; IkeNova/Odum retains ownership of generic execution middleware/routing/infra components and grants the client a license to use them.</li>
@@ -604,6 +652,7 @@
           <p class="fineprint">
             Source: Elysium x IkeNova Consulting Agreement (Work Product / Exclusions). Commercial framing only.
           </p>
+        </div>
         </div>
       </section>
 
@@ -688,6 +737,23 @@
       minScale: 0.2,
       maxScale: 1.2
     });
+
+    // Ensure mousewheel/trackpad scroll works inside scrollable areas (.box / .slide-scroll)
+    // without blocking native scrolling.
+    document.addEventListener('wheel', (event) => {
+      const scroller = event.target && event.target.closest ? event.target.closest('.box, .slide-scroll') : null;
+      if (!scroller) return;
+      if (scroller.scrollHeight <= scroller.clientHeight + 1) return;
+
+      const atTop = scroller.scrollTop <= 0;
+      const atBottom = scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 1;
+      const goingUp = event.deltaY < 0;
+      const goingDown = event.deltaY > 0;
+
+      if ((goingUp && !atTop) || (goingDown && !atBottom)) {
+        event.stopImmediatePropagation();
+      }
+    }, { capture: true, passive: true });
   </script>
 </body>
 </html>
