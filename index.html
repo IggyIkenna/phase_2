@@ -131,15 +131,20 @@
     .reveal .slides section.has-slide-scroll{
       display: flex;
       flex-direction: column;
+      height: 100%;
+      overflow: visible !important; /* override the hidden rule so slide-scroll can work */
     }
     .reveal .slides section.has-slide-scroll .slide-scroll{
       flex: 1 1 auto;
       min-height: 0;
-      max-height: none;
-      padding-bottom: 110px; /* ensure last lines can scroll above fixed footer */
+      max-height: calc(100vh - var(--header-h) - var(--footer-h) - 90px); /* fits below h2 + header/footer */
+      overflow-y: auto !important;
+      overflow-x: hidden;
+      padding-bottom: 100px; /* ensure last lines can scroll above fixed footer */
     }
     .reveal .slides section.has-slide-scroll .box{
       max-height: none; /* avoid nested scrolling inside the slide scroller */
+      overflow: visible;
     }
 
     .slide-scroll::-webkit-scrollbar { width: 10px; }
@@ -216,6 +221,8 @@
       padding-top: calc(var(--header-h) + 10px);
       padding-bottom: calc(var(--footer-h) + 10px);
       box-sizing: border-box;
+      height: 100%;
+      overflow: hidden; /* prevent section overflow; use .slide-scroll for scrollable slides */
     }
   </style>
 </head>
@@ -555,12 +562,12 @@
                 <li><span class="emph">Phase 2 unpaid:</span> <span class="money">$45k</span> (work already started)</li>
                 <li><span class="emph">Change order uplift:</span> <span class="money">$35k</span> (covers accumulated overrun + go-live gap)</li>
                 <li><span class="emph">Payment to proceed now:</span> <span class="money">$57.5k</span> (<span class="money">$22.5k</span> interim Phase 2 payment + <span class="money">$35k</span> change order)</li>
-                <li><span class="emph">Remaining balance:</span> depends on selected option (<span class="emph">Option 1:</span> <span class="money">$22.5k</span> / <span class="emph">Option 2:</span> <span class="money">$92.5k</span>)</li>
+                <li><span class="emph">Remaining balance (Option 1):</span> <span class="money">$22.5k</span></li>
               </ul>
               <ul class="dim">
                 <li>Recognizes research/build overrun already incurred</li>
                 <li>Includes additional work completed to date (e.g., improved carry sourcing across venues, yield/restaking analysis, and execution approach research)</li>
-                <li>Funds remaining baseline “go-live” tasks that were not scoped</li>
+                <li>Funds remaining baseline "go-live" tasks that were not scoped</li>
                 <li>Still keeps scope tight around the original mandate</li>
               </ul>
             </div>
@@ -615,9 +622,18 @@
           <div class="card">
             <div class="tag good"><span class="dot good"></span> Commercial</div>
             <p style="margin-top: 12px;">
-              Total fee: <span class="money">$195k</span>
+              Contract: <span class="money">$90k</span> (<span class="money">$45k</span> + <span class="money">$45k</span>)<br/>
+              Platform expansion: <span class="money">+$105k</span> → Total: <span class="money">$195k</span>
             </p>
-            <div class="box" style="max-height: 26vh;">
+            <div class="hr"></div>
+            <div class="box">
+              <ul style="margin-top: 0;">
+                <li><span class="emph">Paid to date:</span> <span class="money">$45k</span> (Phase 1)</li>
+                <li><span class="emph">Phase 2 unpaid:</span> <span class="money">$45k</span> (work already started)</li>
+                <li><span class="emph">Platform uplift:</span> <span class="money">$105k</span> (execution + infra + multi-strategy expansion)</li>
+                <li><span class="emph">Payment to proceed now:</span> <span class="money">$57.5k</span> (<span class="money">$22.5k</span> interim Phase 2 payment + <span class="money">$35k</span> change order)</li>
+                <li><span class="emph">Remaining balance (Option 2):</span> <span class="money">$92.5k</span></li>
+              </ul>
               <ul class="dim">
                 <li>Delivers the full platform build (execution + infra + multiple strategies)</li>
                 <li>Builds reusable IP (execution layer) that can compound into future strategies</li>
@@ -627,7 +643,7 @@
           </div>
           <div class="card">
             <h3>Core deliverables</h3>
-            <div class="box" style="max-height: 34vh;">
+            <div class="box">
               <ul>
                 <li>Atomic transaction execution layer + connectors</li>
                 <li>Smart execution + multi-venue routing primitives</li>
@@ -642,7 +658,7 @@
         <div class="hr"></div>
         <div class="card">
           <h3>Addendum required (IP carve-out + exclusions alignment)</h3>
-          <div class="box" style="max-height: 26vh;">
+          <div class="box">
             <ul class="dim">
               <li><span class="emph">Why an addendum:</span> the signed contract assigns Work Product to the Company, but Option 2 includes a reusable execution layer that should remain licensable.</li>
               <li><span class="emph">Proposed carve-out:</span> client owns strategy-specific deliverables for their use; IkeNova/Odum retains ownership of generic execution middleware/routing/infra components and grants the client a license to use them.</li>
@@ -691,7 +707,7 @@
             <ul>
               <li><span class="emph">Operations &amp; maintenance retainer:</span> monitoring, incident response, upgrades, and day-to-day reliability</li>
               <li><span class="emph">Profit share:</span> optional performance-aligned commercial structure once live trading is underway</li>
-              <li><span class="emph">Advanced execution as a service:</span> routing/simulation/MEV protections and execution tooling as an ongoing capability</li>
+              <li><span class="emph">Advanced execution as a service:</span> routing/simulation/MEV protections and ML execution algos as an ongoing capability</li>
             </ul>
             <p class="fineprint" style="margin-top: 10px;">
               We do not need to finalize these terms today. It is reasonable to confirm Option 1 vs Option 2 now, then finalize ongoing engagement closer to live deployment once scope and operating responsibilities are clearer.
