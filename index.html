@@ -26,12 +26,12 @@
     /* More readable base typography */
     .reveal {
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      font-size: 28px;
+      font-size: 21px; /* ~25% reduction for laptop fit */
     }
     .reveal h1, .reveal h2, .reveal h3 { letter-spacing: -0.02em; }
-    .reveal h1 { font-size: 2.0em; }
-    .reveal h2 { font-size: 1.55em; }
-    .reveal h3 { font-size: 1.15em; }
+    .reveal h1 { font-size: 1.95em; }
+    .reveal h2 { font-size: 1.50em; }
+    .reveal h3 { font-size: 1.12em; }
     .reveal p { line-height: 1.35; }
     .reveal a { color: var(--odum-link); }
 
@@ -75,7 +75,7 @@
     .hr {
       height: 1px;
       background: rgba(255,255,255,0.18);
-      margin: 18px 0;
+      margin: 14px 0;
     }
     .grid2 {
       display: grid;
@@ -93,9 +93,29 @@
       background: var(--odum-card);
       border: 1px solid var(--odum-border);
       border-radius: 14px;
-      padding: 16px 18px;
+      padding: 14px 16px;
     }
     .card h3 { margin: 0 0 10px 0; }
+
+    /* Scrollable box (same idea as presentations/index.html) */
+    .box {
+      border-radius: 12px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.14);
+      max-height: 62vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      touch-action: pan-y;
+      scrollbar-gutter: stable;
+    }
+
+    .box::-webkit-scrollbar { width: 10px; }
+    .box::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.04); border-radius: 999px; }
+    .box::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.16); border-radius: 999px; border: 2px solid rgba(0,0,0,0); background-clip: padding-box; }
+    .box::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.24); }
     .tag {
       display: inline-flex;
       align-items: center;
@@ -149,6 +169,18 @@
     @media print {
       .fixed-header, .fixed-footer { position: fixed; }
       .reveal .slides section { page-break-after: always; }
+      .box { max-height: none; overflow: visible; }
+    }
+
+    /* Screen layout: avoid Reveal vertical centering + reserve space for fixed header/footer */
+    :root{
+      --header-h: 40px;
+      --footer-h: 32px;
+    }
+    .reveal .slides section{
+      padding-top: calc(var(--header-h) + 10px);
+      padding-bottom: calc(var(--footer-h) + 10px);
+      box-sizing: border-box;
     }
   </style>
 </head>
@@ -174,7 +206,7 @@
       <section>
         <div class="kicker">Commercial</div>
         <h1>Live Phase Options & Commercials</h1>
-        <h3 class="muted">Elysium x IkeNova — Phase 2 decision</h3>
+        <h3 class="muted">Elysium x IkeNova (Odum affiliate) — Phase 2 decision</h3>
         <div class="hr"></div>
         <div class="card">
           <h3>Decision required</h3>
@@ -211,8 +243,8 @@
           <div class="card">
             <div class="tag good"><span class="dot good"></span> Decision</div>
             <ul style="margin-top: 12px;">
-              <li><span class="emph">Option 1 — $125k:</span> complete Phase 2 with a tightly bounded “production” definition (single basis strategy; minimal execution stack)</li>
-              <li><span class="emph">Option 2 — $195k:</span> build the full execution + infra platform (MEV/simulation + routing + backtest→live + multi-strategy expansion)</li>
+              <li><span class="emph">Option 1 — $125k:</span> complete Phase 2 with a tightly bounded “production” definition (single basis strategy; minimal execution stack). The <span class="money">+$35k</span> change order covers accumulated delivery overrun and additional strategy/execution work completed to date.</li>
+              <li><span class="emph">Option 2 — $195k:</span> option 1 + build the full execution + infra platform (MEV/simulation + routing + backtest→live + multi-strategy expansion)</li>
             </ul>
           </div>
         </div>
@@ -225,30 +257,33 @@
           <p class="muted">
             The agreement defines the Consulting Services and splits the engagement into two phases (Annex A):
           </p>
-          <p class="quote">
-            “Consultant will provide labor and services with the purpose of developing a
-            <strong>delta neutral cryptocurrency basis algorithmic trading system</strong> (collectively, the “Consulting Services”).”
-          </p>
-          <p class="quote">
-            “This Agreement shall be divided into <strong>two Phases</strong> as defined in Annex A.”
-          </p>
-          <p class="quote">
-            “Phase One: <strong>Research &amp; Design: $45,000</strong>”
-          </p>
-          <p class="quote">
-            “Phase Two: <strong>Production Implementation: $45,000</strong>”
-          </p>
-          <div class="hr"></div>
-          <h3 style="margin-top: 0;">Phase 2 deliverables</h3>
-          <ul>
-            <li><span class="emph">Production trading system</span> implementation</li>
-            <li><span class="emph">Monitoring dashboard</span> implementation</li>
-            <li><span class="emph">Risk management</span> system deployment</li>
-            <li><span class="emph">Live trading</span> starts with client “seed” / test capital to build an initial track record <span class="dim">(after MVP internal testing is complete)</span></li>
-          </ul>
-          <p class="quote">
-            “Scope Exclusions: … <strong>Ultra low latency execution</strong> … <strong>Post-launch maintenance and upgrades</strong> (can be arranged separately) …”
-          </p>
+          <div class="box">
+            <p class="quote">
+              “Consultant will provide labor and services with the purpose of developing a
+              <strong>delta neutral cryptocurrency basis algorithmic trading system</strong> (collectively, the “Consulting Services”).”
+            </p>
+            <p class="quote">
+              “This Agreement shall be divided into <strong>two Phases</strong> as defined in Annex A.”
+            </p>
+            <p class="quote">
+              “Phase One: <strong>Research &amp; Design: $45,000</strong>”
+            </p>
+            <p class="quote">
+              “Phase Two: <strong>Production Implementation: $45,000</strong>”
+            </p>
+            <div class="hr"></div>
+            <h3 style="margin-top: 0;">Phase 2 deliverables</h3>
+            <ul>
+              <li><span class="emph">Production trading system</span> implementation</li>
+              <li><span class="emph">Deployment + monitoring</span> system (production release, version control, and one-click deploy workflow)</li>
+              <li><span class="emph">Operations dashboard</span> for trades, positions, and risk</li>
+              <li><span class="emph">Risk management</span> system deployment (guardrails + reconciliation)</li>
+              <li><span class="emph">Live trading</span> starts with client “seed” / test capital to build an initial track record <span class="dim">(after MVP internal testing is complete)</span></li>
+            </ul>
+            <p class="quote">
+              “Scope Exclusions: … <strong>Ultra low latency execution</strong> … <strong>Post-launch maintenance and upgrades</strong> (can be arranged separately) …”
+            </p>
+          </div>
           <p class="fineprint">
             Source: Elysium x IkeNova Consulting Agreement (Annex A excerpts).
           </p>
@@ -300,7 +335,7 @@
             <ul>
               <li>Delivered analysis covered <span class="emph">16 strategy variants</span> across <span class="emph">6 strategy families</span></li>
               <li>Benchmarked against <span class="emph">Ethena sUSDe</span> using real data</li>
-              <li>Found that simple staking alone is weak; performance comes from leverage + reward stacking and careful execution assumptions</li>
+              <li>Found that simple staking alone is weak; performance comes from recursive staking + reward stacking and careful execution assumptions</li>
             </ul>
             <p class="fineprint">Source: delivered research package (strategy ROE analysis).</p>
           </div>
@@ -311,72 +346,74 @@
       <section>
         <h2>Scope matrix (contract deliverables vs platform build)</h2>
         <div class="card">
-          <table class="matrix">
-            <thead>
-              <tr>
-                <th style="width: 42%;">Capability</th>
-                <th style="width: 19%;">Contract (research)</th>
-                <th style="width: 19%;">Option 1 ($125k)</th>
-                <th style="width: 20%;">Option 2 ($195k)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Phase 1 research output</strong> (basis strategy in BTC/ETH + backtesting framework + risk design)</td>
-                <td class="yes">Yes (Annex A)</td>
-                <td class="yes">Yes</td>
-                <td class="yes">Yes</td>
-              </tr>
-              <tr>
-                <td><strong>Data acquisition + integrity</strong> (basis strategy inputs across CeFi/DeFi venues)</td>
-                <td class="maybe">Implied by Annex A outputs</td>
-                <td class="yes">Yes</td>
-                <td class="yes">Yes</td>
-              </tr>
-              <tr>
-                <td><strong>Execution plan / execution assumptions</strong> (enough to design production)</td>
-                <td class="yes">Yes (Annex A)</td>
-                <td class="yes">Yes</td>
-                <td class="yes">Yes</td>
-              </tr>
-              <tr>
-                <td><strong>Production implementation</strong> (production system + monitoring + risk + seed pilot)</td>
-                <td class="yes">Yes (Phase 2)</td>
-                <td class="yes">Yes</td>
-                <td class="yes">Yes</td>
-              </tr>
-              <tr>
-                <td><strong>Atomic on-chain execution</strong> (flash loans, multi-step tx, failure atomicity)</td>
-                <td class="maybe">Not explicit in contract</td>
-                <td class="maybe">Only if required for contracted strategy</td>
-                <td class="yes">Included</td>
-              </tr>
-              <tr>
-                <td><strong>MEV protection + simulation</strong> (CoW Swap, Tenderly, private RPC, slippage controls)</td>
-                <td class="maybe">Not explicit in contract</td>
-                <td class="maybe">Baseline controls only</td>
-                <td class="yes">Included</td>
-              </tr>
-              <tr>
-                <td><strong>Multi-venue smart execution / routing</strong> (better fills, coordination)</td>
-                <td class="maybe">Contract says “capacity to trade across major venues”</td>
-                <td class="maybe">Minimal (connectivity + basic execution)</td>
-                <td class="yes">Execution layer + routing primitives</td>
-              </tr>
-              <tr>
-                <td><strong>Multiple strategy types</strong> (not just one staked basis concept)</td>
-                <td class="no">No (basis strategy scope)</td>
-                <td class="no">No</td>
-                <td class="yes">Yes</td>
-              </tr>
-              <tr>
-                <td><strong>Backtest → live pipeline</strong> (same codebase, env-based switching)</td>
-                <td class="maybe">Not specified; implied by production delivery</td>
-                <td class="maybe">Partial</td>
-                <td class="yes">Yes</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="box">
+            <table class="matrix">
+              <thead>
+                <tr>
+                  <th style="width: 42%;">Capability</th>
+                  <th style="width: 19%;">Contract (research)</th>
+                  <th style="width: 19%;">Option 1 ($125k)</th>
+                  <th style="width: 20%;">Option 2 ($195k)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Phase 1 research output</strong> (basis strategy in BTC/ETH + backtesting framework + risk design)</td>
+                  <td class="yes">Yes (Annex A)</td>
+                  <td class="yes">Yes</td>
+                  <td class="yes">Yes</td>
+                </tr>
+                <tr>
+                  <td><strong>Data acquisition + integrity</strong> (basis strategy inputs across CeFi/DeFi venues)</td>
+                  <td class="maybe">Implied by Annex A outputs</td>
+                  <td class="yes">Yes</td>
+                  <td class="yes">Yes</td>
+                </tr>
+                <tr>
+                  <td><strong>Execution plan / execution assumptions</strong> (enough to design production)</td>
+                  <td class="yes">Yes (Annex A)</td>
+                  <td class="yes">Yes</td>
+                  <td class="yes">Yes</td>
+                </tr>
+                <tr>
+                  <td><strong>Production implementation</strong> (production system + monitoring + risk + seed pilot)</td>
+                  <td class="yes">Yes (Phase 2)</td>
+                  <td class="yes">Yes</td>
+                  <td class="yes">Yes</td>
+                </tr>
+                <tr>
+                  <td><strong>Atomic on-chain execution</strong> (flash loans, multi-step tx, failure atomicity)</td>
+                  <td class="maybe">Not explicit in contract</td>
+                  <td class="maybe">Only if required for contracted strategy</td>
+                  <td class="yes">Included</td>
+                </tr>
+                <tr>
+                  <td><strong>MEV protection + simulation</strong> (CoW Swap, Tenderly, private RPC, slippage controls)</td>
+                  <td class="maybe">Not explicit in contract</td>
+                  <td class="maybe">Baseline controls only</td>
+                  <td class="yes">Included</td>
+                </tr>
+                <tr>
+                  <td><strong>Multi-venue smart execution / routing</strong> (better fills, coordination)</td>
+                  <td class="maybe">Contract says “capacity to trade across major venues”</td>
+                  <td class="maybe">Minimal (connectivity + basic execution)</td>
+                  <td class="yes">Execution layer + routing primitives</td>
+                </tr>
+                <tr>
+                  <td><strong>Multiple strategy types</strong> (not just one staked basis concept)</td>
+                  <td class="no">No (basis strategy scope)</td>
+                  <td class="no">No</td>
+                  <td class="yes">Yes</td>
+                </tr>
+                <tr>
+                  <td><strong>Backtest → live pipeline</strong> (same codebase, env-based switching)</td>
+                  <td class="maybe">Not specified; implied by production delivery</td>
+                  <td class="maybe">Partial</td>
+                  <td class="yes">Yes</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
           <p class="fineprint" style="margin-top: 10px;">
             Note: This is not about whether these are “nice-to-haves.” For meaningful size and safety, many become requirements (atomicity, MEV protection, monitoring).
           </p>
@@ -470,26 +507,33 @@
               Proposed change order: <span class="money">+$35k</span> → Total: <span class="money">$125k</span>
             </p>
             <div class="hr"></div>
-            <ul style="margin-top: 0;">
-              <li><span class="emph">Paid to date:</span> <span class="money">$45k</span> (Phase 1)</li>
-              <li><span class="emph">Phase 2 unpaid:</span> <span class="money">$45k</span> (work already started)</li>
-              <li><span class="emph">Change order uplift:</span> <span class="money">$35k</span> (covers overrun + go-live gap)</li>
-              <li><span class="emph">Remaining balance to proceed:</span> <span class="money">$80k</span></li>
-            </ul>
-            <ul class="dim">
-              <li>Recognizes research/build overrun already incurred</li>
-              <li>Funds remaining baseline “go-live” tasks that weren’t scoped</li>
-              <li>Still keeps scope tight around the original mandate</li>
-            </ul>
+            <div class="box">
+              <ul style="margin-top: 0;">
+                <li><span class="emph">Paid to date:</span> <span class="money">$45k</span> (Phase 1)</li>
+                <li><span class="emph">Phase 2 unpaid:</span> <span class="money">$45k</span> (work already started)</li>
+                <li><span class="emph">Change order uplift:</span> <span class="money">$35k</span> (covers accumulated overrun + go-live gap)</li>
+                <li><span class="emph">Remaining balance to proceed:</span> <span class="money">$80k</span></li>
+              </ul>
+              <ul class="dim">
+                <li>Recognizes research/build overrun already incurred</li>
+                <li>Includes additional work completed to date (e.g., improved carry sourcing across venues, yield/restaking analysis, and execution approach research)</li>
+                <li>Funds remaining baseline “go-live” tasks that were not scoped</li>
+                <li>Still keeps scope tight around the original mandate</li>
+              </ul>
+            </div>
           </div>
           <div class="card">
             <h3>Inclusions (baseline)</h3>
-            <ul>
-              <li>Finalize research deliverables + reproducibility</li>
-              <li>One strategy path to live (minimal viable execution)</li>
-              <li>Basic monitoring + risk checks + deployment support</li>
-              <li>Known constraints documented (venue limits, scaling)</li>
-            </ul>
+            <div class="box">
+              <ul>
+                <li>Finalize research deliverables + reproducibility</li>
+                <li>One strategy path to live (minimal viable execution)</li>
+                <li>Production deployment workflow (versioned releases + low-downtime deploy)</li>
+                <li>Monitoring and reporting for trades, positions, and risk</li>
+                <li>Backtest-on-demand for parameter/strategy version testing, with a direct path to production deployment</li>
+                <li>Known constraints documented (venue limits, scaling)</li>
+              </ul>
+            </div>
             <p class="fineprint">
               Option 1 delivers the contracted Phase 2 outcome without expanding into a full trading platform build.
             </p>
@@ -501,6 +545,7 @@
           <ul class="dim">
             <li>Settle the <span class="money">$45k</span> unpaid Phase 2 amount + sign the <span class="money">$35k</span> change order before further Phase 2 execution work.</li>
             <li>Acceptance: client has <strong>10 business days</strong> to accept/reject deliverables; contractor has <strong>10 business days</strong> to remedy deficiencies.</li>
+            <li>Invoicing will be issued by <strong>IkeNova (BVI)</strong>.</li>
           </ul>
           <p class="fineprint">
             Source: Elysium x IkeNova Consulting Agreement (Acceptance &amp; Testing; Payment Terms).
@@ -534,24 +579,28 @@
           </div>
           <div class="card">
             <h3>Core deliverables</h3>
-            <ul>
-              <li>Atomic transaction execution layer + connectors</li>
-              <li>Smart execution + multi-venue routing primitives</li>
-              <li>MEV protection + simulation + slippage controls</li>
-              <li>Backtest-to-live pipeline (same code paths)</li>
-              <li>Cloud deployment + monitoring + alerting</li>
-              <li>Multiple strategy ideas (beyond single staked basis concept)</li>
-            </ul>
+            <div class="box">
+              <ul>
+                <li>Atomic transaction execution layer + connectors</li>
+                <li>Smart execution + multi-venue routing primitives</li>
+                <li>MEV protection + simulation + slippage controls</li>
+                <li>Backtest-to-live pipeline (same code paths)</li>
+                <li>Cloud deployment + monitoring + alerting</li>
+                <li>Multiple strategy ideas (beyond single staked basis concept)</li>
+              </ul>
+            </div>
           </div>
         </div>
         <div class="hr"></div>
         <div class="card">
           <h3>Addendum required (IP carve-out + exclusions alignment)</h3>
-          <ul class="dim">
-            <li><span class="emph">Why an addendum:</span> the signed contract assigns Work Product to the Company, but Option 2 includes a reusable execution layer that should remain licensable.</li>
-            <li><span class="emph">Proposed carve-out:</span> client owns strategy-specific deliverables for their use; IkeNova/Odum retains ownership of generic execution middleware/routing/infra components and grants the client a license to use them.</li>
-            <li><span class="emph">Exclusions must stay consistent:</span> contract excludes items like <strong>Ultra low latency execution</strong> and <strong>AI machine learning prediction strategy development</strong> unless explicitly added.</li>
-          </ul>
+          <div class="box">
+            <ul class="dim">
+              <li><span class="emph">Why an addendum:</span> the signed contract assigns Work Product to the Company, but Option 2 includes a reusable execution layer that should remain licensable.</li>
+              <li><span class="emph">Proposed carve-out:</span> client owns strategy-specific deliverables for their use; IkeNova/Odum retains ownership of generic execution middleware/routing/infra components and grants the client a license to use them.</li>
+              <li><span class="emph">Exclusions must stay consistent:</span> contract excludes items like <strong>Ultra low latency execution</strong> and <strong>AI machine learning prediction strategy development</strong> unless explicitly added.</li>
+            </ul>
+          </div>
           <p class="fineprint">
             Source: Elysium x IkeNova Consulting Agreement (Work Product / Exclusions). Commercial framing only.
           </p>
@@ -582,6 +631,26 @@
         </div>
       </section>
 
+      <!-- ONGOING ENGAGEMENT -->
+      <section>
+        <h2>Ongoing engagement terms (post go-live)</h2>
+        <div class="card">
+          <p class="muted">
+            Separate from the Phase 2 delivery decision, we will need to agree how ongoing operations and enhancements are handled once the system is trading.
+          </p>
+          <div class="box">
+            <ul>
+              <li><span class="emph">Operations &amp; maintenance retainer:</span> monitoring, incident response, upgrades, and day-to-day reliability</li>
+              <li><span class="emph">Profit share:</span> optional performance-aligned commercial structure once live trading is underway</li>
+              <li><span class="emph">Advanced execution as a service:</span> routing/simulation/MEV protections and execution tooling as an ongoing capability</li>
+            </ul>
+            <p class="fineprint" style="margin-top: 10px;">
+              We do not need to finalize these terms today. It is reasonable to confirm Option 1 vs Option 2 now, then finalize ongoing engagement closer to live deployment once scope and operating responsibilities are clearer.
+            </p>
+          </div>
+        </div>
+      </section>
+
       <!-- DECISION -->
       <section>
         <h2>Decision + next steps</h2>
@@ -597,6 +666,7 @@
             <li>Confirm deliverables list + exclusions (1-page addendum)</li>
             <li>Confirm timeline + acceptance criteria</li>
             <li>Confirm production responsibilities (who runs, monitors, responds)</li>
+            <li>Schedule a follow-up to finalize ongoing engagement terms (retainer / profit share / execution as a service) closer to go-live</li>
           </ul>
         </div>
       </section>
@@ -612,7 +682,11 @@
       controls: true,
       progress: true,
       transition: "fade",
-      backgroundTransition: "fade"
+      backgroundTransition: "fade",
+      center: false,
+      margin: 0.06,
+      minScale: 0.2,
+      maxScale: 1.2
     });
   </script>
 </body>
